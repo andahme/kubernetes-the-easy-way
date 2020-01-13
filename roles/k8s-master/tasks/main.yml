@@ -1,0 +1,60 @@
+- name: Create Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/kubernetes/config
+    - /var/lib/kubernetes
+  tags:
+    - config
+    - copy-tls
+
+- name: Template Kubernetes Configuration (encryption-config.yaml)
+  template:
+    src: templates/encryption-config.yaml.j2
+    dest: /var/lib/kubernetes/encryption-config.yaml
+  tags:
+    - config
+
+- name: Copy TLS Certificate (ca.pem)
+  copy:
+    src: "lib/group/{{ stacker_subgroup }}/ca.pem"
+    dest: /var/lib/kubernetes/ca.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (ca-key.pem)
+  copy:
+    src: "lib/group/{{ stacker_subgroup }}/ca-key.pem"
+    dest: /var/lib/kubernetes/ca-key.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (service-account.pem)
+  copy:
+    src: "lib/group/{{ stacker_subgroup }}/service-account.pem"
+    dest: /var/lib/kubernetes/service-account.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (service-account-key.pem)
+  copy:
+    src: "lib/group/{{ stacker_subgroup }}/service-account-key.pem"
+    dest: /var/lib/kubernetes/service-account-key.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (kubernetes.pem)
+  copy:
+    src: "lib/host/{{ inventory_hostname }}/kubernetes.pem"
+    dest: /var/lib/kubernetes/kubernetes.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (kubernetes-key.pem)
+  copy:
+    src: "lib/host/{{ inventory_hostname }}/kubernetes-key.pem"
+    dest: /var/lib/kubernetes/kubernetes-key.pem
+  tags:
+    - copy-tls
+

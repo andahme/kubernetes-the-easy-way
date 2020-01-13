@@ -1,0 +1,47 @@
+- name: Install Kubernetes Binaries (kube-scheduler)
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/linux/amd64/kube-scheduler
+    dest: /usr/local/bin/
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - binaries
+
+
+- name: Create Directories
+  file:
+    path: /etc/kubernetes/config
+    state: directory
+  tags:
+    - config
+
+- name: Template Kubernetes Configuration (kube-scheduler.yaml)
+  template:
+    src: templates/kube-scheduler.yaml.j2
+    dest: /etc/kubernetes/config/kube-scheduler.yaml
+  tags:
+    - config
+
+- name: Template Kubernetes Configuration (kube-scheduler.kubeconfig)
+  template:
+    src: templates/kube-scheduler.kubeconfig.j2
+    dest: /var/lib/kubernetes/kube-scheduler.kubeconfig
+  tags:
+    - config
+
+- name: Template Kubernetes Service (kube-scheduler.service)
+  template:
+    src: templates/kube-scheduler.service.j2
+    dest: /etc/systemd/system/kube-scheduler.service
+  tags:
+    - config
+
+
+- systemd:
+    name: kube-scheduler
+    daemon_reload: yes
+    state: restarted
+  tags:
+    - service
+

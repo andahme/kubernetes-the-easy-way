@@ -1,0 +1,67 @@
+- include: tasks/runc.yml
+- include: tasks/cri.yml
+- include: tasks/containerd.yml
+
+- include: tasks/cni.yml
+
+
+
+
+
+- name: Install Kubernetes Binaries (kubelet)
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/linux/amd64/kubelet
+    dest: /usr/local/bin/
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - binaries
+
+
+- name: Template Kubelet Configuration (kubeconfig)
+  template:
+    src: templates/kubelet.kubeconfig.j2
+    dest: /var/lib/kubelet/kubeconfig
+  tags:
+    - config
+
+- name: Template Kubelet Configuration (kubelet-config.yaml)
+  template:
+    src: templates/kubelet-config.yaml.j2
+    dest: /var/lib/kubelet/kubelet-config.yaml
+  tags:
+    - config
+
+- name: Template Kubelet Service
+  template:
+    src: templates/kubelet.service.j2
+    dest: /etc/systemd/system/kubelet.service
+  tags:
+    - config
+
+
+- name: Copy Kubelet Certificate
+  copy:
+    src: "lib/host/{{ inventory_hostname }}/kubelet.pem"
+    dest: "/var/lib/kubelet/{{ inventory_hostname }}.pem"
+  tags:
+    - copy-tls
+
+- name: Copy Kubelet Certificate (key)
+  copy:
+    src: "lib/host/{{ inventory_hostname }}/kubelet-key.pem"
+    dest: "/var/lib/kubelet/{{ inventory_hostname }}-key.pem"
+  tags:
+    - copy-tls
+
+
+- systemd:
+    name: kubelet
+    daemon_reload: yes
+    state: restarted
+  tags:
+    - service
+
+
+

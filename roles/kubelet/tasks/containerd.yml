@@ -1,0 +1,43 @@
+- name: Create Directories
+  file:
+    path: /etc/containerd
+    state: directory
+  tags:
+    - config
+
+
+- name: Install containerd
+  unarchive:
+    src: https://github.com/containerd/containerd/releases/download/v1.2.9/containerd-1.2.9.linux-amd64.tar.gz
+    dest: /bin/
+    owner: root
+    group: root
+    extra_opts:
+      - --strip=1
+    remote_src: yes
+  tags:
+    - binaries
+
+
+- name: Copy containerd configuration (config.toml)
+  copy:
+    src: files/containerd-config.toml
+    dest: /etc/containerd/config.toml
+  tags:
+    - config
+
+- name: Template containerd Service
+  template:
+    src: files/containerd.service
+    dest: /etc/systemd/system/containerd.service
+  tags:
+    - config
+
+
+- systemd:
+    name: containerd
+    daemon_reload: yes
+    state: restarted
+  tags:
+    - service
+

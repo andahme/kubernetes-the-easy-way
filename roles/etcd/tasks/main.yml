@@ -1,0 +1,61 @@
+- name: Create Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/etcd
+    - /var/lib/etcd
+  tags:
+    - config
+    - copy-tls
+
+
+- name: Install etcd Binaries
+  unarchive:
+    src: https://github.com/etcd-io/etcd/releases/download/v3.4.0/etcd-v3.4.0-linux-amd64.tar.gz
+    dest: /usr/local/bin/
+    extra_opts:
+      - --strip=1
+      - --wildcards
+      - 'etcd-v3.4.0-linux-amd64/etcd*'
+    remote_src: yes
+  tags:
+    - binaries
+
+
+- name: Template etcd Service (etcd.service)
+  template:
+    src: files/etcd.service
+    dest: /etc/systemd/system/etcd.service
+  tags:
+    - config
+
+
+- name: Copy TLS Certificate (ca.pem)
+  copy:
+    src: "lib/group/{{ stacker_subgroup }}/ca.pem"
+    dest: /etc/etcd/ca.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (kubernetes.pem)
+  copy:
+    src: "lib/host/{{ inventory_hostname }}/kubernetes.pem"
+    dest: /etc/etcd/kubernetes.pem
+  tags:
+    - copy-tls
+
+- name: Copy TLS Certificate (kubernetes-key.pem)
+  copy:
+    src: "lib/host/{{ inventory_hostname }}/kubernetes-key.pem"
+    dest: /etc/etcd/kubernetes-key.pem
+  tags:
+    - copy-tls
+
+
+- systemd:
+    name: etcd
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+

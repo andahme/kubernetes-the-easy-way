@@ -1,0 +1,59 @@
+- block:
+  - name: Create Group Directory
+    connection: local
+    file:
+      path: "lib/group/{{ stacker_subgroup }}"
+      state: directory
+
+  - name: Generate TLS CA
+    connection: local
+    shell: "cfssl gencert \
+              -initca \
+              -config roles/gen-tls/files/ca-config.json \
+              roles/gen-tls/files/ca-csr.json \
+              | cfssljson -bare lib/group/{{ stacker_subgroup }}/ca"
+    args:
+      creates: "lib/group/{{ stacker_subgroup }}/ca.pem"
+
+  # CN: admin
+  # O:  admin system:masters
+  - name: Generate TLS Certificates (admin)
+    connection: local
+    shell: "scripts/gen-tls.sh admin system:masters lib/group/{{ stacker_subgroup }} admin"
+    args:
+      creates: "lib/group/{{ stacker_subgroup }}/admin.pem"
+
+  # CN: system:kube-controller-manager
+  # O:  system:kube-controller-manager
+  - name: Generate TLS Certificates (kube-controller-manager)
+    connection: local
+    shell: "scripts/gen-tls.sh system:kube-controller-manager system:kube-controller-manager lib/group/{{ stacker_subgroup }} kube-controller-manager"
+    args:
+      creates: "lib/group/{{ stacker_subgroup }}/kube-controller-manager.pem"
+
+  # CN: system:kube-scheduler
+  # O:  system:kube-scheduler
+  - name: Generate TLS Certificates (kube-scheduler)
+    connection: local
+    shell: "scripts/gen-tls.sh system:kube-scheduler system:kube-scheduler lib/group/{{ stacker_subgroup }} kube-scheduler"
+    args:
+      creates: "lib/group/{{ stacker_subgroup }}/kube-scheduler.pem"
+
+  # CN: system:kube-proxy
+  # O:  system:node-proxier
+  - name: Generate TLS Certificates (kube-proxy)
+    connection: local
+    shell: "scripts/gen-tls.sh system:kube-proxy system:node-proxier lib/group/{{ stacker_subgroup }} kube-proxy"
+    args:
+      creates: "lib/group/{{ stacker_subgroup }}/kube-proxy.pem"
+
+  - name: Generate TLS Certificates (service-account)
+    connection: local
+    shell: "scripts/gen-tls.sh service-accounts Kubernetes lib/group/{{ stacker_subgroup }} service-account"
+    args:
+      creates: "lib/group/{{ stacker_subgroup }}/service-account.pem"
+  when: inventory_hostname == '127.0.0.1'
+
+
+- include: tasks/gen-tls-kubelet.yml
+- include: tasks/gen-tls-kubernetes.yml

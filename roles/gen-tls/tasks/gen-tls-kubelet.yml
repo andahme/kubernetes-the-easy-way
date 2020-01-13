@@ -1,0 +1,46 @@
+- block:
+  - name: Check Worker TLS
+    connection: local
+    stat:
+      path: "lib/host/{{ inventory_hostname }}/kubelet.pem"
+    register: kubelet_cert
+
+  - block:
+    - name: Create Host Directory
+      connection: local
+      file:
+        path: "lib/host/{{ inventory_hostname }}"
+        state: directory
+
+    - name: Create Work Directory
+      connection: local
+      tempfile:
+        state: directory
+      register: tls_work_dir
+
+    - name: Template Worker CSR
+      connection: local
+      template:
+        src: kubelet-csr.json.j2
+        dest: "{{ tls_work_dir.path }}/kubelet-csr.json"
+
+    - name: Generate Certificate and Key
+      connection: local
+      shell: "cfssl gencert \
+                -ca lib/group/{{ stacker_subgroup }}/ca.pem \
+                -ca-key lib/group/{{ stacker_subgroup }}/ca-key.pem \
+                -config roles/gen-tls/files/ca-config.json \
+                -profile kubernetes \
+                -hostname={{ inventory_hostname }},{{ ansible_default_ipv4.address }} \
+                {{ tls_work_dir.path }}/kubelet-csr.json \
+                | cfssljson -bare lib/host/{{ inventory_hostname }}/kubelet"
+
+    - name: Cleanup Work Directory
+      connection: local
+      file:
+        path: "{{ tls_work_dir.path }}"
+        state: absent
+      when: tls_work_dir.path is defined
+    when: kubelet_cert.stat.exists == false
+  when: "'workers' in group_names"
+

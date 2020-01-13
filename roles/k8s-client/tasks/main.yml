@@ -1,0 +1,25 @@
+- name: Install Kubernetes Binaries (kubectl)
+  become: true
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - install-k8s-client
+
+- name: Create Kubernetes Client Direcotry (~/.kube)
+  file:
+    path: ~/.kube
+    state: directory
+  tags:
+    - gen-k8s-client
+
+- name: Template Kubernetes Configuration (~/.kube/config)
+  template:
+    src: templates/config
+    dest: ~/.kube/config
+  tags:
+    - gen-k8s-client
+

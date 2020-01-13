@@ -1,0 +1,20 @@
+- hosts: etcd
+  become: true
+  roles:
+    - etcd
+
+- hosts: masters
+  become: true
+  roles:
+    - k8s-master
+    - kube-apiserver
+    - kube-controller-manager
+    - kube-scheduler
+
+- hosts: workers
+  become: true
+  roles:
+    - k8s-worker
+    - kube-proxy
+    - kubelet
+

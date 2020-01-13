@@ -1,0 +1,27 @@
+- name: Install Kubernetes Dependencies
+  apt:
+    name: [ 'conntrack', 'ipset', 'socat' ]
+    state: latest
+  tags:
+    - binaries
+
+
+- name: Create Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /var/lib/kubernetes
+    - /var/lib/kubelet
+  tags:
+    - config
+    - copy-tls
+
+
+- name: Copy TLS Certificate (ca.pem)
+  copy:
+    src: "lib/group/{{ stacker_subgroup }}/ca.pem"
+    dest: /var/lib/kubernetes/ca.pem
+  tags:
+    - copy-tls
+

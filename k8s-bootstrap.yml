@@ -1,0 +1,42 @@
+- hosts: 127.0.0.1
+  become: true
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Install System Packages
+      apt:
+        name: [ 'python-apt', 'python-boto3', 'python-netaddr' ]
+        state: latest
+
+    - name: Install TLS Binaries (cfssl)
+      get_url:
+        url: https://github.com/cloudflare/cfssl/releases/download/v1.4.1/cfssl_1.4.1_linux_amd64
+        dest: /usr/local/bin/cfssl
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: Install TLS Binaries (cfssljson)
+      get_url:
+        url: https://github.com/cloudflare/cfssl/releases/download/v1.4.1/cfssljson_1.4.1_linux_amd64
+        dest: /usr/local/bin/cfssljson
+        mode: 0755
+        owner: root
+        group: root
+  tags:
+    - prepare
+
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: false
+  roles:
+    - gen-k8s
+  tags:
+    - gen-k8s
+
+- hosts: all
+  roles:
+    - gen-tls
+  tags:
+    - gen-tls
+

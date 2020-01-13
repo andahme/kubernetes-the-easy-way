@@ -1,0 +1,49 @@
+- name: Install Kubernetes Binaries (kube-proxy)
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v1.15.3/bin/linux/amd64/kube-proxy
+    dest: /usr/local/bin/
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - binaries
+
+
+- name: Create Directory
+  file:
+    path: /var/lib/kube-proxy
+    state: directory
+  tags:
+    - config
+
+- name: Template Kubernetes Configuration (kube-proxy-config.yaml)
+  template:
+    src: templates/kube-proxy-config.yaml.j2
+    dest: /var/lib/kube-proxy/kube-proxy-config.yaml
+  tags:
+    - config
+
+- name: Template Kubernetes Configuration (kube-proxy.kubeconfig)
+  template:
+    src: templates/kube-proxy.kubeconfig.j2
+    dest: /var/lib/kube-proxy/kube-proxy.kubeconfig
+  tags:
+    - config
+
+
+- name: Template Kubernetes Service (kube-proxy.service)
+  template:
+    src: templates/kube-proxy.service.j2
+    dest: /etc/systemd/system/kube-proxy.service
+  tags:
+    - config
+    - service
+
+
+- systemd:
+    name: kube-proxy
+    daemon_reload: yes
+    state: restarted
+  tags:
+    - service
+
