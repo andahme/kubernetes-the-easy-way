@@ -25,3 +25,15 @@
   tags:
     - copy-tls
 
+
+- name: Load br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+
+
+- name: Load br_netfilter module on startup
+  copy:
+    dest: /etc/modules-load.d/k8s-worker.conf
+    content: br_netfilter
+
