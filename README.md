@@ -90,4 +90,16 @@ ansible-playbook \
   k8s-config.yml
 ```
 
+#### Create Roles and Role Bindings
+```bash
+kubectl apply \
+  --filename resources/role-apiserver-to-kubelet.yaml \
+  --filename resources/role-binding-apiserver-to-kubelet.yaml
+```
+
+#### Create Deployments
+```bash
+kubectl apply \
+  --filename resources/coredns.yaml
+```
 
