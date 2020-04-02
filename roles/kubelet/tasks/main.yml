@@ -59,6 +59,7 @@
 - systemd:
     name: kubelet
     daemon_reload: yes
+    enabled: yes
     state: restarted
   tags:
     - service

@@ -43,6 +43,7 @@
 - systemd:
     name: kube-proxy
     daemon_reload: yes
+    enabled: yes
     state: restarted
   tags:
     - service

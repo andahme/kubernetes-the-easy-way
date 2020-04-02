@@ -41,6 +41,7 @@
 - systemd:
     name: kube-scheduler
     daemon_reload: yes
+    enabled: yes
     state: restarted
   tags:
     - service

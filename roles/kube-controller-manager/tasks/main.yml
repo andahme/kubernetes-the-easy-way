@@ -28,6 +28,7 @@
 - systemd:
     name: kube-controller-manager
     daemon_reload: yes
+    enabled: yes
     state: restarted
   tags:
     - service
