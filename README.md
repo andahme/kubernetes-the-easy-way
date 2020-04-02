@@ -62,7 +62,7 @@ ansible-playbook \
 
 ##### Encrypt Configuration Files
 ```bash
-ANSIBLE_VAULT_PASSWORD_FILE=~/.vaultpass
+export ANSIBLE_VAULT_PASSWORD_FILE=~/.vaultpass
 ```
 ```bash
 echo PASSWORD > ${ANSIBLE_VAULT_PASSWORD_FILE}
