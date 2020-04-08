@@ -12,12 +12,12 @@
 
 - name: Install etcd Binaries
   unarchive:
-    src: https://github.com/etcd-io/etcd/releases/download/v3.4.0/etcd-v3.4.0-linux-amd64.tar.gz
+    src: https://github.com/etcd-io/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz
     dest: /usr/local/bin/
     extra_opts:
       - --strip=1
       - --wildcards
-      - 'etcd-v3.4.0-linux-amd64/etcd*'
+      - 'etcd-v{{ etcd_version }}-linux-amd64/etcd*'
     remote_src: yes
   tags:
     - binaries
