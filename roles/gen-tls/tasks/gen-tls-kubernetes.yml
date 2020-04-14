@@ -15,7 +15,7 @@
               -ca-key lib/group/{{ stacker_subgroup }}/ca-key.pem \
               -config roles/gen-tls/files/ca-config.json \
               -profile kubernetes \
-              -hostname {{ k8s_service_network_cidr | ipaddr('next_usable') }},127.0.0.1,{{ ansible_default_ipv4.address }},{{ ansible_ec2_public_ipv4 }},{{ k8s_api_address }},kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
+              -hostname {{ k8s_service_network_cidr | ipaddr('next_usable') }},127.0.1.1,{{ ansible_default_ipv4.address }},{{ ansible_ec2_public_ipv4 }},{{ k8s_api_address }},kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local \
               roles/gen-tls/files/kubernetes-csr.json \
               | cfssljson -bare \
                 lib/host/{{ inventory_hostname }}/kubernetes"
