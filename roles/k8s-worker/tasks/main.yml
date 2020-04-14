@@ -2,6 +2,7 @@
   apt:
     name: [ 'conntrack', 'ipset', 'socat' ]
     state: latest
+    update_cache: yes
   tags:
     - binaries
 
