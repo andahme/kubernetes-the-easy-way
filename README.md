@@ -13,32 +13,36 @@ aws cloudformation \
     ParameterKey=KeyName,ParameterValue=adabook
 ```
 
-##### Create a Master (11)
+##### Create a Master (11-13)
 ```bash
-aws cloudformation \
-  create-stack \
-  --stack-name am-dev-master-11 \
-  --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/k8s/master.template \
-  --parameters \
-    ParameterKey=Group,ParameterValue=am \
-    ParameterKey=SubGroup,ParameterValue=dev \
-    ParameterKey=MasterNumber,ParameterValue=11 \
-    ParameterKey=UserName,ParameterValue=gutano \
-    ParameterKey=KeyName,ParameterValue=adabook
+for INDEX in $(seq 11 13); do
+  aws cloudformation \
+    create-stack \
+    --stack-name am-dev-master-${INDEX} \
+    --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/k8s/master.template \
+    --parameters \
+      ParameterKey=Group,ParameterValue=am \
+      ParameterKey=SubGroup,ParameterValue=dev \
+      ParameterKey=MasterNumber,ParameterValue=${INDEX} \
+      ParameterKey=UserName,ParameterValue=gutano \
+      ParameterKey=KeyName,ParameterValue=adabook
+done
 ```
 
-##### Create a Worker (101)
+##### Create a Worker (101-102)
 ```bash
-aws cloudformation \
-  create-stack \
-  --stack-name am-dev-worker-101 \
-  --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/k8s/worker.template \
-  --parameters \
-    ParameterKey=Group,ParameterValue=am \
-    ParameterKey=SubGroup,ParameterValue=dev \
-    ParameterKey=WorkerNumber,ParameterValue=101 \
-    ParameterKey=UserName,ParameterValue=gutano \
-    ParameterKey=KeyName,ParameterValue=adabook
+for INDEX in $(seq 101 102); do
+  aws cloudformation \
+    create-stack \
+    --stack-name am-dev-worker-${INDEX} \
+    --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/k8s/worker.template \
+    --parameters \
+      ParameterKey=Group,ParameterValue=am \
+      ParameterKey=SubGroup,ParameterValue=dev \
+      ParameterKey=WorkerNumber,ParameterValue=${INDEX} \
+      ParameterKey=UserName,ParameterValue=gutano \
+      ParameterKey=KeyName,ParameterValue=adabook
+done
 ```
 
 
