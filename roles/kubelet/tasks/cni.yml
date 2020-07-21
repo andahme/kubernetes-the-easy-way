@@ -32,7 +32,7 @@
 
 - name: cni configuration (loopback)
   copy:
-    content: files/cni-99-loopback.conf
+    src: files/cni-99-loopback.conf
     dest: /etc/cni/net.d/99-loopback.conf
   tags:
     - config
