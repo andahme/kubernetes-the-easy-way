@@ -1,27 +1,26 @@
-am:
-  dev:
-    children:
-      etcd:
-        hosts:
-          master-11.dev.aws.andah.me:
-          master-12.dev.aws.andah.me:
-          master-13.dev.aws.andah.me:
-      masters:
-        hosts:
-          master-11.dev.aws.andah.me:
-          master-12.dev.aws.andah.me:
-          master-13.dev.aws.andah.me:
-      workers:
-        hosts:
-          worker-101.dev.aws.andah.me:
-          worker-102.dev.aws.andah.me:
-    hosts:
-      127.0.0.1:
-    vars:
-      stacker_group: 'am'
-      stacker_subgroup: 'dev'
-      k8s_api_address: 'master-11.dev.aws.andah.me'
-      k8s_pod_network_prefix: '10.200'
-      k8s_service_network_cidr: '10.32.0.0/24'
-      k8s_service_port_range: '30000-32767'
+dev:
+  children:
+    etcd:
+      hosts:
+        master-11.dev.aws.andah.me:
+        master-12.dev.aws.andah.me:
+        master-13.dev.aws.andah.me:
+    masters:
+      hosts:
+        master-11.dev.aws.andah.me:
+        master-12.dev.aws.andah.me:
+        master-13.dev.aws.andah.me:
+    workers:
+      hosts:
+        worker-101.dev.aws.andah.me:
+        worker-102.dev.aws.andah.me:
+  hosts:
+    127.0.0.1:
+  vars:
+    stacker_group: 'am'
+    stacker_subgroup: 'dev'
+    k8s_api_address: 'master-11.dev.aws.andah.me'
+    k8s_pod_network_prefix: '10.200'
+    k8s_service_network_cidr: '10.32.0.0/24'
+    k8s_service_port_range: '30000-32767'
 
