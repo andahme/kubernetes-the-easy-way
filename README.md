@@ -1,7 +1,7 @@
 ## Context
 export CF_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
 export CF_GROUP=sg
-export CF_SUBGROUP=dev
+export CF_SUBGROUP=test
 
 ## Provision Infrastructure
 
