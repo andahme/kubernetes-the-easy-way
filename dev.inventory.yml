@@ -22,4 +22,5 @@ dev:
     k8s_api_address: 'master-11.dev.aws.source.guru'
     k8s_pod_network_prefix: '10.200'
     k8s_service_network_cidr: '10.32.0.0/24'
+    k8s_service_port_range: '30000-32767'
 
