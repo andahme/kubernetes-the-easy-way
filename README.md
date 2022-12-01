@@ -1,7 +1,7 @@
 ## Context
-export CF_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
-export CF_GROUP=sg
-export CF_SUBGROUP=test
+export AWS_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
+export GROUP=sg
+export SUBGROUP=test
 
 ## Provision Infrastructure
 
@@ -9,12 +9,12 @@ export CF_SUBGROUP=test
 ```bash
 aws cloudformation \
   create-stack \
-  --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s \
+  --stack-name ${GROUP}-${SUBGROUP}-k8s \
   --template-url https://s3.amazonaws.com/aws.andah.me/cloudformation/v0.0.4-SNAPSHOT/group/subgroup/k8s/k8s.template \
-  --notification-arns arn:aws:sns:us-east-1:${CF_ACCOUNT}:${CF_GROUP}-lifecycle \
+  --notification-arns arn:aws:sns:us-east-1:${AWS_ACCOUNT}:${GROUP}-lifecycle \
   --parameters \
-    ParameterKey=Group,ParameterValue=${CF_GROUP} \
-    ParameterKey=SubGroup,ParameterValue=${CF_SUBGROUP}
+    ParameterKey=Group,ParameterValue=${GROUP} \
+    ParameterKey=SubGroup,ParameterValue=${SUBGROUP}
 ```
 
 ##### Create a Master (11-13)
@@ -22,12 +22,12 @@ aws cloudformation \
 for INDEX in $(seq 11 13); do
   aws cloudformation \
     create-stack \
-    --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-master-${INDEX} \
+    --stack-name ${GROUP}-${SUBGROUP}-k8s-master-${INDEX} \
     --template-url https://s3.amazonaws.com/aws.andah.me/cloudformation/v0.0.4-SNAPSHOT/group/subgroup/k8s/master.template \
-    --notification-arns arn:aws:sns:us-east-1:${CF_ACCOUNT}:${CF_GROUP}-lifecycle \
+    --notification-arns arn:aws:sns:us-east-1:${AWS_ACCOUNT}:${GROUP}-lifecycle \
     --parameters \
-      ParameterKey=Group,ParameterValue=${CF_GROUP} \
-      ParameterKey=SubGroup,ParameterValue=${CF_SUBGROUP} \
+      ParameterKey=Group,ParameterValue=${GROUP} \
+      ParameterKey=SubGroup,ParameterValue=${SUBGROUP} \
       ParameterKey=MasterNumber,ParameterValue=${INDEX} \
       ParameterKey=UserName,ParameterValue=gutano \
       ParameterKey=KeyName,ParameterValue=adabook
@@ -39,12 +39,12 @@ done
 for INDEX in $(seq 101 102); do
   aws cloudformation \
     create-stack \
-    --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-worker-${INDEX} \
+    --stack-name ${GROUP}-${SUBGROUP}-k8s-worker-${INDEX} \
     --template-url https://s3.amazonaws.com/aws.andah.me/cloudformation/v0.0.4-SNAPSHOT/group/subgroup/k8s/worker.template \
-    --notification-arns arn:aws:sns:us-east-1:${CF_ACCOUNT}:${CF_GROUP}-lifecycle \
+    --notification-arns arn:aws:sns:us-east-1:${AWS_ACCOUNT}:${GROUP}-lifecycle \
     --parameters \
-      ParameterKey=Group,ParameterValue=${CF_GROUP} \
-      ParameterKey=SubGroup,ParameterValue=${CF_SUBGROUP} \
+      ParameterKey=Group,ParameterValue=${GROUP} \
+      ParameterKey=SubGroup,ParameterValue=${SUBGROUP} \
       ParameterKey=WorkerNumber,ParameterValue=${INDEX} \
       ParameterKey=UserName,ParameterValue=gutano \
       ParameterKey=KeyName,ParameterValue=adabook
@@ -52,22 +52,21 @@ done
 ```
 
 
+## Context
+```bash
+export ANSIBLE_INVENTORY=inventory/test.yml
+```
+
 ## Generate Configuration
 
 ##### Install Tools
 ```bash
-ansible-playbook \
-  --inventory inventory/${CF_GROUP}-${CF_SUBGROUP}.yml \
-  --tags prepare \
-  k8s-bootstrap.yml
+ansible-playbook --tags prepare k8s-bootstrap.yml
 ```
 
 ##### Generate Kubernetes Encryption Secret and TLS Certificates
 ```bash
-ansible-playbook \
-  --inventory inventory/${CF_GROUP}-${CF_SUBGROUP}.yml \
-  --tags gen-k8s,gen-tls \
-  k8s-bootstrap.yml
+ansible-playbook --tags gen-k8s,gen-tls k8s-bootstrap.yml
 ```
 
 ##### Encrypt Configuration Files
@@ -79,7 +78,7 @@ echo PASSWORD > ${ANSIBLE_VAULT_PASSWORD_FILE}
 ```
 ```bash
 ansible-vault encrypt \
-  group_vars/${CF_GROUP}/${CF_SUBGROUP}/k8s-encryption-secret \
+  group_vars/${SUBGROUP}/k8s-encryption-secret \
   $(find lib -type f)
 ```
 
@@ -88,16 +87,12 @@ ansible-vault encrypt \
 
 #### Create Cluster
 ```bash
-ansible-playbook \
-  --inventory inventory/${CF_GROUP}-${CF_SUBGROUP}.yml \
-  k8s-cluster.yml
+ansible-playbook k8s-cluster.yml
 ```
 
 #### Generate Client Configuration
 ```bash
-ansible-playbook \
-  --inventory inventory/${CF_GROUP}-${CF_SUBGROUP}.yml \
-  k8s-config.yml
+ansible-playbook k8s-config.yml
 ```
 
 #### Create Roles and Role Bindings
@@ -109,24 +104,23 @@ kubectl apply \
 
 #### Create Deployments
 ```bash
-kubectl apply \
-  --filename resources/coredns.yaml
+kubectl apply --filename resources/coredns.yaml
 ```
 
 
 ## Quick Teardown
 ```bash
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-worker-102
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-worker-101
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-k8s-worker-102
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-k8s-worker-101
 
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-master-13
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-master-12
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s-master-11
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-k8s-master-13
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-k8s-master-12
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-k8s-master-11
 
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-k8s
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-k8s
 
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-bastion
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-bastion
 
-aws cloudformation delete-stack --stack-name ${CF_GROUP}-${CF_SUBGROUP}-subnet
+aws cloudformation delete-stack --stack-name ${GROUP}-${SUBGROUP}-subnet
 ```
 

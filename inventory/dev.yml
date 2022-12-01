@@ -2,18 +2,13 @@ dev:
   children:
     etcd:
       hosts:
-        master-11.dev.aws.andah.me:
-        master-12.dev.aws.andah.me:
-        master-13.dev.aws.andah.me:
+        master-[11:13].dev.aws.andah.me:
     masters:
       hosts:
-        master-11.dev.aws.andah.me:
-        master-12.dev.aws.andah.me:
-        master-13.dev.aws.andah.me:
+        master-[11:13].dev.aws.andah.me:
     workers:
       hosts:
-        worker-101.dev.aws.andah.me:
-        worker-102.dev.aws.andah.me:
+        worker-[101:102].dev.aws.andah.me:
   hosts:
     127.0.0.1:
   vars:

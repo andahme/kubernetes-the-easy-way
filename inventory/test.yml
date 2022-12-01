@@ -2,18 +2,13 @@ test:
   children:
     etcd:
       hosts:
-        master-11.test.aws.source.guru:
-        master-12.test.aws.source.guru:
-        master-13.test.aws.source.guru:
+        master-[11:13].test.aws.source.guru:
     masters:
       hosts:
-        master-11.test.aws.source.guru:
-        master-12.test.aws.source.guru:
-        master-13.test.aws.source.guru:
+        master-[11:13].test.aws.source.guru:
     workers:
       hosts:
-        worker-101.test.aws.source.guru:
-        worker-102.test.aws.source.guru:
+        worker-[101:102].test.aws.source.guru:
   hosts:
     127.0.0.1:
   vars:
