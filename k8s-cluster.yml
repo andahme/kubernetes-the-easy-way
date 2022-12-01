@@ -17,8 +17,7 @@
     - k8s-worker
     - kube-proxy
     - kubelet
+  tasks:
+    - name: CNI Initialization Workaround
+      ansible.builtin.reboot:
 
-# This is a workaround to avoid CNI not getting initialized
-- hosts: workers
-  name: Restart Worker
-  ansible.builtin.reboot:
