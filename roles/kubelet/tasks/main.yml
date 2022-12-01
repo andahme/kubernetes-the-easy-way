@@ -64,8 +64,5 @@
   tags:
     - service
 
-# This is a workaround to avoid CNI not getting initialized
-- name: Restart Worker
-  ansible.builtin.reboot:
 
 

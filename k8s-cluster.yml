@@ -18,3 +18,7 @@
     - kube-proxy
     - kubelet
 
+# This is a workaround to avoid CNI not getting initialized
+- hosts: workers
+  name: Restart Worker
+  ansible.builtin.reboot:
