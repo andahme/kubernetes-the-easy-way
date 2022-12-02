@@ -27,8 +27,8 @@
     - name: Generate Certificate and Key
       connection: local
       shell: "cfssl gencert \
-                -ca lib/group/{{ stacker_subgroup }}/ca.pem \
-                -ca-key lib/group/{{ stacker_subgroup }}/ca-key.pem \
+                -ca lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/ca.pem \
+                -ca-key lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/ca-key.pem \
                 -config roles/gen-tls/files/ca-config.json \
                 -profile kubernetes \
                 -hostname={{ inventory_hostname }},{{ ansible_default_ipv4.address }} \
