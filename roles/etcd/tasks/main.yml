@@ -33,7 +33,7 @@
 
 - name: Copy TLS Certificate (ca.pem)
   copy:
-    src: "lib/group/{{ stacker_subgroup }}/ca.pem"
+    src: "lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/ca.pem"
     dest: /etc/etcd/ca.pem
   tags:
     - copy-tls
