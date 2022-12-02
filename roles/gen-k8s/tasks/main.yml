@@ -1,10 +1,10 @@
 - name: Create Group Directory
   file:
-    path: "group_vars/{{ stacker_subgroup }}"
+    path: "group_vars/{{ stacker_group }}-{{ stacker_subgroup }}"
     state: directory
 
 - name: Generate Kubernetes Encryption Secret
-  shell: "echo \"k8s_encryption_secret: '$(head -c 32 /dev/urandom | base64)'\" > group_vars/{{ stacker_subgroup }}/k8s-encryption-secret"
+  shell: "echo \"k8s_encryption_secret: '$(head -c 32 /dev/urandom | base64)'\" > group_vars/{{ stacker_group }}-{{ stacker_subgroup }}/k8s-encryption-secret"
   args:
-    creates: "group_vars/{{ stacker_subgroup }}/k8s-encryption-secret"
+    creates: "group_vars/{{ stacker_group }}-{{ stacker_subgroup }}/k8s-encryption-secret"
 
