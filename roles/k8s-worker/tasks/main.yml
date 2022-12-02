@@ -21,7 +21,7 @@
 
 - name: Copy TLS Certificate (ca.pem)
   copy:
-    src: "lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/ca.pem"
+    src: "lib/group/{{ env_context }}/ca.pem"
     dest: /var/lib/kubernetes/ca.pem
   tags:
     - copy-tls

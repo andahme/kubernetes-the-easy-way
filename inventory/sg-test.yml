@@ -12,8 +12,7 @@ sg-test:
   hosts:
     127.0.0.1:
   vars:
-    stacker_group: 'sg'
-    stacker_subgroup: 'test'
+    env_context: 'sg-test'
     k8s_api_address: 'master-11.test.aws.source.guru'
     k8s_pod_network_prefix: '10.200'
     k8s_service_network_cidr: '10.32.0.0/24'

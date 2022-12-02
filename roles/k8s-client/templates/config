@@ -1,7 +1,7 @@
 apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: {{ lookup('file', 'lib/group/{{ stacker_subgroup }}/ca.pem') | b64encode }}
+    certificate-authority-data: {{ lookup('file', 'lib/group/{{ env_context }}/ca.pem') | b64encode }}
     server: https://{{ k8s_api_address }}:6443
   name: kubernetes-the-hard-way
 contexts:
@@ -15,5 +15,5 @@ preferences: {}
 users:
 - name: admin
   user:
-    client-certificate-data: {{ lookup('file', 'lib/group/{{ stacker_subgroup }}/admin.pem') | b64encode }}
-    client-key-data: {{ lookup('file', 'lib/group/{{ stacker_subgroup }}/admin-key.pem') | b64encode }}
+    client-certificate-data: {{ lookup('file', 'lib/group/{{ env_context }}/admin.pem') | b64encode }}
+    client-key-data: {{ lookup('file', 'lib/group/{{ env_context }}/admin-key.pem') | b64encode }}
