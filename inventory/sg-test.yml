@@ -1,4 +1,4 @@
-test:
+sg-test:
   children:
     etcd:
       hosts:

@@ -1,6 +1,6 @@
 ## Set Inventory
 ```bash
-ANSIBLE_INVENTORY=inventory/sg/test.yml
+ANSIBLE_INVENTORY=inventory/sg-test.yml
 ```
 
 ## Generate Configuration

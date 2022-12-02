@@ -1,4 +1,4 @@
-dev:
+am-dev:
   children:
     etcd:
       hosts:
