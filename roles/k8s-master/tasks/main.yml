@@ -18,28 +18,28 @@
 
 - name: Copy TLS Certificate (ca.pem)
   copy:
-    src: "lib/group/{{ stacker_subgroup }}/ca.pem"
+    src: "lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/ca.pem"
     dest: /var/lib/kubernetes/ca.pem
   tags:
     - copy-tls
 
 - name: Copy TLS Certificate (ca-key.pem)
   copy:
-    src: "lib/group/{{ stacker_subgroup }}/ca-key.pem"
+    src: "lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/ca-key.pem"
     dest: /var/lib/kubernetes/ca-key.pem
   tags:
     - copy-tls
 
 - name: Copy TLS Certificate (service-account.pem)
   copy:
-    src: "lib/group/{{ stacker_subgroup }}/service-account.pem"
+    src: "lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/service-account.pem"
     dest: /var/lib/kubernetes/service-account.pem
   tags:
     - copy-tls
 
 - name: Copy TLS Certificate (service-account-key.pem)
   copy:
-    src: "lib/group/{{ stacker_subgroup }}/service-account-key.pem"
+    src: "lib/group/{{ stacker_group }}-{{ stacker_subgroup }}/service-account-key.pem"
     dest: /var/lib/kubernetes/service-account-key.pem
   tags:
     - copy-tls
