@@ -2,18 +2,18 @@ sg-test:
   children:
     etcd:
       hosts:
-        master-[11:13].test.aws.source.guru:
+        sg-test-master-[11:13].aws.source.guru:
     masters:
       hosts:
-        master-[11:13].test.aws.source.guru:
+        sg-test-master-[11:13].aws.source.guru:
     workers:
       hosts:
-        worker-[101:102].test.aws.source.guru:
+        sg-test-worker-[101:102].aws.source.guru:
   hosts:
     127.0.0.1:
   vars:
     env_context: 'sg-test'
-    k8s_api_address: 'master-11.test.aws.source.guru'
+    k8s_api_address: 'sg-test-master-11.aws.source.guru'
     k8s_pod_network_prefix: '10.200'
     k8s_service_network_cidr: '10.32.0.0/24'
     k8s_service_port_range: '30000-32767'
