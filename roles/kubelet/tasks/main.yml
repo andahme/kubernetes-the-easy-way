@@ -1,8 +1,8 @@
-- include: tasks/runc.yml
-- include: tasks/cri.yml
-- include: tasks/containerd.yml
+- import_tasks: tasks/runc.yml
+- import_tasks: tasks/cri.yml
+- import_tasks: tasks/containerd.yml
 
-- include: tasks/cni.yml
+- import_tasks: tasks/cni.yml
 
 
 

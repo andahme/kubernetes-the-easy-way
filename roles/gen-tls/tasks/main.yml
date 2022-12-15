@@ -55,5 +55,5 @@
   when: inventory_hostname == '127.0.0.1'
 
 
-- include: tasks/gen-tls-kubelet.yml
-- include: tasks/gen-tls-kubernetes.yml
+- import_tasks: tasks/gen-tls-kubelet.yml
+- import_tasks: tasks/gen-tls-kubernetes.yml
