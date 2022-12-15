@@ -26,8 +26,6 @@ elif [ -z ${ANSIBLE_INVENTORY} ]; then
 fi
 
 
-export ANSIBLE_INVENTORY=inventory/sg-test.yml
-
 ansible-playbook --tags prepare \
   k8s-bootstrap.yml
 
