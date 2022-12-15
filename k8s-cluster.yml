@@ -3,10 +3,10 @@
   roles:
     - etcd
 
-- hosts: masters
+- hosts: controllers
   become: true
   roles:
-    - k8s-master
+    - k8s-controller
     - kube-apiserver
     - kube-controller-manager
     - kube-scheduler

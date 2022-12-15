@@ -2,10 +2,10 @@ am-dev:
   children:
     etcd:
       hosts:
-        am-dev-master-[11:13].aws.andah.me:
-    masters:
+        am-dev-controller-[11:13].aws.andah.me:
+    controllers:
       hosts:
-        am-dev-master-[11:13].aws.andah.me:
+        am-dev-controller-[11:13].aws.andah.me:
     workers:
       hosts:
         am-dev-worker-[101:102].aws.andah.me:
@@ -13,7 +13,7 @@ am-dev:
     127.0.0.1:
   vars:
     env_context: 'am-dev'
-    k8s_api_address: 'am-dev-master-11.aws.andah.me'
+    k8s_api_address: 'am-dev-controller-11.aws.andah.me'
     k8s_pod_network_prefix: '10.200'
     k8s_service_network_cidr: '10.32.0.0/24'
     k8s_service_port_range: '30000-32767'

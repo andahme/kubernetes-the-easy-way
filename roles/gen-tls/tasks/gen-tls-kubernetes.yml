@@ -21,5 +21,5 @@
                 lib/host/{{ inventory_hostname }}/kubernetes"
     args:
       creates: "lib/host/{{ inventory_hostname }}/kubernetes.pem"
-  when: "'masters' in group_names"
+  when: "'controllers' in group_names"
 
