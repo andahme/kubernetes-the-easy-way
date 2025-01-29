@@ -4,10 +4,10 @@
 ```bash
 aws cloudformation \
   create-stack \
-  --stack-name sg-dev-bastion \
-  --template-url https://s3.amazonaws.com/aws.andah.me/cloudformation/v0.0.4-SNAPSHOT/group/subgroup/bastion.template \
+  --stack-name am-dev-bastion \
+  --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/bastion.template \
   --parameters \
-    ParameterKey=Group,ParameterValue=sg \
+    ParameterKey=Group,ParameterValue=am \
     ParameterKey=SubGroup,ParameterValue=dev \
     ParameterKey=UserName,ParameterValue=gutano \
     ParameterKey=KeyName,ParameterValue=adabook
@@ -18,10 +18,10 @@ aws cloudformation \
 for INDEX in $(seq 11 13); do
   aws cloudformation \
     create-stack \
-    --stack-name sg-dev-master-${INDEX} \
-    --template-url https://s3.amazonaws.com/aws.andah.me/cloudformation/v0.0.4-SNAPSHOT/group/subgroup/k8s/master.template \
+    --stack-name am-dev-master-${INDEX} \
+    --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/k8s/master.template \
     --parameters \
-      ParameterKey=Group,ParameterValue=sg \
+      ParameterKey=Group,ParameterValue=am \
       ParameterKey=SubGroup,ParameterValue=dev \
       ParameterKey=MasterNumber,ParameterValue=${INDEX} \
       ParameterKey=UserName,ParameterValue=gutano \
@@ -34,10 +34,10 @@ done
 for INDEX in $(seq 101 102); do
   aws cloudformation \
     create-stack \
-    --stack-name sg-dev-worker-${INDEX} \
-    --template-url https://s3.amazonaws.com/aws.andah.me/cloudformation/v0.0.4-SNAPSHOT/group/subgroup/k8s/worker.template \
+    --stack-name am-dev-worker-${INDEX} \
+    --template-url https://s3.amazonaws.com/aws.andah.me/testing/group/subgroup/k8s/worker.template \
     --parameters \
-      ParameterKey=Group,ParameterValue=sg \
+      ParameterKey=Group,ParameterValue=am \
       ParameterKey=SubGroup,ParameterValue=dev \
       ParameterKey=WorkerNumber,ParameterValue=${INDEX} \
       ParameterKey=UserName,ParameterValue=gutano \

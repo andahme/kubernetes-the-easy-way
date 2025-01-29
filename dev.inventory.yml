@@ -2,24 +2,24 @@ dev:
   children:
     etcd:
       hosts:
-        master-11.dev.aws.source.guru:
-        master-12.dev.aws.source.guru:
-        master-13.dev.aws.source.guru:
+        master-11.dev.aws.andah.me:
+        master-12.dev.aws.andah.me:
+        master-13.dev.aws.andah.me:
     masters:
       hosts:
-        master-11.dev.aws.source.guru:
-        master-12.dev.aws.source.guru:
-        master-13.dev.aws.source.guru:
+        master-11.dev.aws.andah.me:
+        master-12.dev.aws.andah.me:
+        master-13.dev.aws.andah.me:
     workers:
       hosts:
-        worker-101.dev.aws.source.guru:
-        worker-102.dev.aws.source.guru:
+        worker-101.dev.aws.andah.me:
+        worker-102.dev.aws.andah.me:
   hosts:
     127.0.0.1:
   vars:
-    stacker_group: 'sg'
+    stacker_group: 'am'
     stacker_subgroup: 'dev'
-    k8s_api_address: 'api.dev.aws.source.guru'
+    k8s_api_address: 'api.dev.aws.andah.me'
     k8s_pod_network_prefix: '10.200'
     k8s_service_network_cidr: '10.32.0.0/24'
 
