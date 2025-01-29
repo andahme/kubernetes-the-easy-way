@@ -1,6 +1,5 @@
 cni_version: '0.9.1'
 containerd_version: '1.4.4'
-cri_version: '1.21.0'
 etcd_version: '3.4.15'
 k8s_version: '1.21.0'
 runc_version: '1.0.0-rc93'
