@@ -107,17 +107,3 @@ kubectl apply \
   --filename resources/coredns.yaml
 ```
 
-
-## Quick Teardown
-```bash
-aws cloudformation delete-stack --stack-name sg-dev-bastion
-
-for INDEX in $(seq 11 13); do
-  aws cloudformation delete-stack --stack-name sg-dev-master-${INDEX}
-done
-
-for INDEX in $(seq 101 102); do
-  aws cloudformation delete-stack --stack-name sg-dev-worker-${INDEX}
-done
-```
-
