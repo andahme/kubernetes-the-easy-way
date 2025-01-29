@@ -1,2 +1,2 @@
 etcd_version: '3.4.15'
-k8s_version: '1.21.0'
+k8s_version: '1.15.3'
