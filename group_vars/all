@@ -1,4 +1,4 @@
-cni_version: '0.8.2'
+cni_version: '0.9.1'
 containerd_version: '1.4.4'
 cri_version: '1.21.0'
 etcd_version: '3.4.15'
