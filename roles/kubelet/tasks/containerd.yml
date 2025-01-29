@@ -8,7 +8,7 @@
 
 - name: Install containerd
   unarchive:
-    src: https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}.linux-amd64.tar.gz
+    src: https://github.com/containerd/containerd/releases/download/v1.2.9/containerd-1.2.9.linux-amd64.tar.gz
     dest: /bin/
     owner: root
     group: root

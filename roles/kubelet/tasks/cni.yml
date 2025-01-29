@@ -7,7 +7,7 @@
 
 - name: Install CNI Binaries
   unarchive:
-    src: https://github.com/containernetworking/plugins/releases/download/v{{ cni_version }}/cni-plugins-linux-amd64-v{{ cni_version }}.tgz
+    src: https://github.com/containernetworking/plugins/releases/download/v0.8.2/cni-plugins-linux-amd64-v0.8.2.tgz
     dest: /opt/cni/bin/
     owner: root
     group: root
